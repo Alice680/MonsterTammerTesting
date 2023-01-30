@@ -1,2 +1,2 @@
 # MonsterTammerTesting
-Some test code and trial games for my planned game.
+Some test code and trial gameplay for my planned game.
