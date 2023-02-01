@@ -14,14 +14,17 @@ public class Grid
 
         public Entity entity;
 
-        public Node(int x, int y, TileType type, GameObject obj, Entity ent)
+        public Node(int x, int y, TileType type, GameObject obj)
         {
             x_position = x;
             y_position = y;
 
             tile_type = type;
             tile_object = obj;
-            entity = ent;
+
+            tile_object.transform.position = new Vector2(x + 0.5f, y + 0.5f);
+
+            entity = null;
 
             Debug.DrawLine(new Vector2(x, y), new Vector2(x + 1, y), Color.black, Mathf.Infinity, false);
             Debug.DrawLine(new Vector2(x, y), new Vector2(x, y + 1), Color.black, Mathf.Infinity, false);
@@ -46,9 +49,16 @@ public class Grid
 
         nodes = new Node[x_size, y_size];
 
+        TileHolder holder = (TileHolder)Resources.Load("DataHolders/TileHolder");
+
         for (int i = 0; i < x_size; ++i)
             for (int e = 0; e < y_size; ++e)
-                nodes[i, e] = new Node(i, e, TileType.Ground, null, null);
+            {
+                if (i == 0 || e == 0 || i == x - 1 || e == y - 1)
+                    nodes[i, e] = new Node(i, e, TileType.Wall, holder.GetTile(TileType.Wall, 0));
+                else
+                    nodes[i, e] = new Node(i, e, TileType.Ground, holder.GetTile(TileType.Ground, 0));
+            }
     }
 
     //Entity stuff
@@ -97,6 +107,22 @@ public class Grid
                     return new Vector2Int(i, e);
 
         return new Vector2Int(-1, -1);
+    }
+
+    public Entity GetEntityAtPosition(int x, int y)
+    {
+        if (!IsValidPosition(x, y))
+            return null;
+
+        return nodes[x, y].entity;
+    }
+
+    public bool CheckEntityEnter(int x, int y, Entity ent)
+    {
+        if (!IsValidPosition(x, y) || ent == null || GetEntityAtPosition(x, y) != null)
+            return false;
+
+        return nodes[x, y].tile_type == TileType.Ground;
     }
 
     //TBD
