@@ -9,9 +9,18 @@ public class AICore : Actor
 
     }
 
+    //temp
+    private float start_time;
+    //
+
+    public override void StartTurn()
+    {
+        start_time = Time.time;
+    }
+
     public override void Run()
     {
-        Debug.Log("End Turn");
-        dm_refrence.EndTurn();
+        if (Time.time - start_time > 1f)
+            dm_refrence.EndTurn();
     }
 }

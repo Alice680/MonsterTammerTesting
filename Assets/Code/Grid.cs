@@ -12,6 +12,8 @@ public class Grid
 
         public GameObject tile_object;
 
+        public GameObject tile_marker;
+
         public Entity entity;
 
         public Node(int x, int y, TileType type, GameObject obj)
@@ -29,7 +31,24 @@ public class Grid
             Debug.DrawLine(new Vector2(x, y), new Vector2(x + 1, y), Color.black, Mathf.Infinity, false);
             Debug.DrawLine(new Vector2(x, y), new Vector2(x, y + 1), Color.black, Mathf.Infinity, false);
         }
+
+        public void SetMarker(GameObject tile)
+        {
+            ClearMarker();
+
+            tile_marker = tile;
+
+            tile_marker.transform.position = new Vector2(x_position + 0.5f, y_position + 0.5f);
+        }
+
+        public void ClearMarker()
+        {
+            GameObject.Destroy(tile_marker);
+            tile_marker = null;
+        }
     }
+
+    private TileHolder tile_refrence;
 
     private int x_size, y_size;
     private Node[,] nodes;
@@ -49,16 +68,22 @@ public class Grid
 
         nodes = new Node[x_size, y_size];
 
-        TileHolder holder = (TileHolder)Resources.Load("DataHolders/TileHolder");
+        tile_refrence = (TileHolder)Resources.Load("DataHolders/TileHolder");
 
         for (int i = 0; i < x_size; ++i)
             for (int e = 0; e < y_size; ++e)
             {
                 if (i == 0 || e == 0 || i == x - 1 || e == y - 1)
-                    nodes[i, e] = new Node(i, e, TileType.Wall, holder.GetTile(TileType.Wall, 0));
+                    nodes[i, e] = new Node(i, e, TileType.Wall, tile_refrence.GetTile(TileType.Wall, 0));
                 else
-                    nodes[i, e] = new Node(i, e, TileType.Ground, holder.GetTile(TileType.Ground, 0));
+                    nodes[i, e] = new Node(i, e, TileType.Ground, tile_refrence.GetTile(TileType.Ground, 0));
             }
+    }
+
+    //Grid Data
+    public Vector2Int GetGridSize()
+    {
+        return new Vector2Int(x_size, y_size);
     }
 
     //Entity stuff
@@ -123,6 +148,24 @@ public class Grid
             return false;
 
         return nodes[x, y].tile_type == TileType.Ground;
+    }
+
+    //Tile Markers
+    public void SetTileMarker(int x, int y, int index)
+    {
+        nodes[x, y].SetMarker(tile_refrence.GetTile(TileType.Marker, index));
+    }
+
+    public void ClearTileMarker(int x, int y)
+    {
+        nodes[x, y].ClearMarker();
+    }
+
+    public void ClearTileMarkers()
+    {
+        for (int i = 0; i < x_size; ++i)
+            for (int e = 0; e < y_size; ++e)
+                ClearTileMarker(i, e);
     }
 
     //TBD

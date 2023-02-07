@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: ed6c1b08c9ac48049a7542fc30b3d544
+guid: af7d1317e48a52a41bc430462773585a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1034418674839372498
-    second: TilePlaceHolder_0
+      213: 1764151751429161927
+    second: ActionCounter_0
   - first:
-      213: 7509784624525242522
-    second: TilePlaceHolder_1
+      213: 2435192020913908059
+    second: ActionCounter_1
+  - first:
+      213: -5558316764010918818
+    second: ActionCounter_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -109,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TilePlaceHolder_0
+      name: ActionCounter_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 96
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,17 +126,38 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2d3b2122b105a1f0800000000000000
-      internalID: -1034418674839372498
+      spriteID: 7c381d9cba68b7810800000000000000
+      internalID: 1764151751429161927
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilePlaceHolder_1
+      name: ActionCounter_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b596076ad3a8bc120800000000000000
+      internalID: 2435192020913908059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ActionCounter_2
+      rect:
+        serializedVersion: 2
+        x: 96
         y: 0
         width: 32
         height: 32
@@ -144,8 +168,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a907484d35d183860800000000000000
-      internalID: 7509784624525242522
+      spriteID: e5cc7043a54ecd2b0800000000000000
+      internalID: -5558316764010918818
       vertices: []
       indices: 
       edges: []

@@ -11,6 +11,11 @@ public class Actor
         dm_refrence = manager;
     }
 
+    public virtual void StartTurn()
+    {
+
+    }
+
     public virtual void Run()
     {
 

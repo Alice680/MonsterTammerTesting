@@ -8,31 +8,34 @@ public class Entity
 
     private int id;
 
-    private int hp, atk, spd, mov;
+    private int hp, atk, spd, act;
 
     private Actor actor;
 
+    private Vector2Int position;
+
     private GameObject model;
 
-    public Entity(GameObject obj, Actor act, int[] stats)
+    public Entity(GameObject obj, Actor actor, int[] stats)
     {
         id = ++previous_id;
 
         model = obj;
 
-        actor = act;
+        this.actor = actor;
 
-        if(stats.Length == 4)
+        if (stats.Length == 4)
         {
             hp = stats[0];
             atk = stats[1];
             spd = stats[2];
-            mov = stats[3];
+            this.act = stats[3];
         }
     }
 
     public void SetPosition(int x, int y)
     {
+        position = new Vector2Int(x, y);
         model.transform.position = new Vector2(x + 0.5F, y + 0.5F);
     }
 
@@ -56,15 +59,20 @@ public class Entity
         return actor;
     }
 
+    public Vector2Int GetPosition()
+    {
+        return position;
+    }
+
     //Stats
     public int GetSpeed()
     {
         return spd;
     }
 
-    public int GetMoves()
+    public int GetActions()
     {
-        return mov;
+        return act;
     }
 
     //Overide

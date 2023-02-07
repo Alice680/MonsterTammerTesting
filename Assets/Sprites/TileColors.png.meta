@@ -1,13 +1,19 @@
 fileFormatVersion: 2
-guid: ed6c1b08c9ac48049a7542fc30b3d544
+guid: f2200a5c93170a6418c0831068a5fff1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1034418674839372498
-    second: TilePlaceHolder_0
+      213: 4312667251594867877
+    second: TileColors_0
   - first:
-      213: 7509784624525242522
-    second: TilePlaceHolder_1
+      213: -7406320966770694101
+    second: TileColors_1
+  - first:
+      213: 8686952521488171211
+    second: TileColors_2
+  - first:
+      213: -6867592179856254790
+    second: TileColors_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -109,7 +115,49 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TilePlaceHolder_0
+      name: TileColors_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a4b5cd040ca9db30800000000000000
+      internalID: 4312667251594867877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileColors_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b28ea133256773990800000000000000
+      internalID: -7406320966770694101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileColors_2
       rect:
         serializedVersion: 2
         x: 0
@@ -123,14 +171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2d3b2122b105a1f0800000000000000
-      internalID: -1034418674839372498
+      spriteID: bc08cf7fa414e8870800000000000000
+      internalID: 8686952521488171211
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilePlaceHolder_1
+      name: TileColors_3
       rect:
         serializedVersion: 2
         x: 32
@@ -144,8 +192,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a907484d35d183860800000000000000
-      internalID: 7509784624525242522
+      spriteID: ab8da696c4961b0a0800000000000000
+      internalID: -6867592179856254790
       vertices: []
       indices: 
       edges: []

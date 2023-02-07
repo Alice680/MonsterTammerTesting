@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1514dffbf0cce774a83419097c7bcf5b, type: 3}
   m_Name: TileHolder
   m_EditorClassIdentifier: 
+  marker_tiles:
+  - {fileID: 6775293254535862610, guid: 33b15e00757192444afc820ed5bf12cb, type: 3}
+  - {fileID: 8593440087040472984, guid: 187153cdaae87954789287ac3ec59e4b, type: 3}
+  - {fileID: 3425910753128473818, guid: 7e9fa8d0a14a5524f8daae4626af6915, type: 3}
+  - {fileID: 8933441175286049254, guid: cc178a23702a0ba4bae93f376e912c70, type: 3}
   ground_tiles:
   - {fileID: 7158810755294463463, guid: 347c5460ab982d740b5bd26c7abb16fe, type: 3}
   wall_tiles:
