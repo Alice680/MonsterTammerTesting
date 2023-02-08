@@ -8,7 +8,7 @@ public class Entity
 
     private int id;
 
-    private int hp, atk, spd, act;
+    private int hp, max_hp, dmg, spd, act;
 
     private Actor actor;
 
@@ -26,8 +26,8 @@ public class Entity
 
         if (stats.Length == 4)
         {
-            hp = stats[0];
-            atk = stats[1];
+            max_hp = hp = stats[0];
+            dmg = stats[1];
             spd = stats[2];
             this.act = stats[3];
         }
@@ -37,6 +37,16 @@ public class Entity
     {
         position = new Vector2Int(x, y);
         model.transform.position = new Vector2(x + 0.5F, y + 0.5F);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        hp -= damage;
+    }
+
+    public void DestroySelf()
+    {
+        GameObject.Destroy(model);
     }
 
     //ID
@@ -65,6 +75,16 @@ public class Entity
     }
 
     //Stats
+    public int GetHP()
+    {
+        return hp;
+    }
+
+    public int GetDamage()
+    {
+        return dmg;
+    }
+
     public int GetSpeed()
     {
         return spd;

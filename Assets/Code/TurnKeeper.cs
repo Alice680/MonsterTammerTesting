@@ -48,20 +48,22 @@ public class TurnKeeper
         Reclculate();
     }
 
-    public void RemoveEntity(Entity ent)
+    public void RemoveEntity(Entity entity)
     {
-        return;
-
-        if (ent == null)
+        if (entity == null || head == null)
             return;
+
+        if (entity.Compare(head.entity))
+            head.next = head;
 
         Node temp = head;
 
-        while (temp != null)
+        while (temp.next != null)
         {
-            if (temp.entity == ent)
+            if (temp.next.entity.Compare(entity))
             {
-
+                temp.next = temp.next.next;
+                return;
             }
 
             temp = temp.next;

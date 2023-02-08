@@ -21,5 +21,7 @@ MonoBehaviour:
   effect_area:
     XAxis: 0
     YAxis: 0
-    shape: 0
+    shape: 1
     hollow: 0
+  menu_sprite: {fileID: 0}
+  battle_sprite: {fileID: 5147452592620723316, guid: 98cb4f7a7afcfae4e9d19543e5d6fd9a, type: 3}

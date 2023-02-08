@@ -28,6 +28,7 @@ public struct MapShape
             case Shape.Line:
                 break;
             case Shape.Rectangle:
+                list = GetRectanglePoints(start, direction);
                 break;
         }
 
@@ -88,6 +89,11 @@ public struct MapShape
     private List<Vector2Int> GetRectanglePoints(Vector2Int start, Direction direction)
     {
         List<Vector2Int> list = new List<Vector2Int>();
+
+        for (int i = -XAxis; i <= XAxis; ++i)
+            for (int e = -YAxis; e <= YAxis; ++e)
+                if (!hollow || i != 0 || e != 0)
+                    list.Add(new Vector2Int(i, e) + start);
 
         return list;
     }
