@@ -8,29 +8,22 @@ public class Entity
 
     private int id;
 
-    private int hp, max_hp, dmg, spd, act;
+    protected int max_hp, max_sp, max_mp, p_dmg, m_dmg, frc, p_def, m_def, res, spd, act;
+    protected int hp, sp, mp;
 
-    private Actor actor;
+    protected Actor actor;
 
-    private Vector2Int position;
+    protected Vector2Int position;
 
-    private GameObject model;
+    protected GameObject model;
 
-    public Entity(GameObject obj, Actor actor, int[] stats)
+    public Entity(GameObject obj, Actor actor)
     {
         id = ++previous_id;
 
         model = obj;
 
         this.actor = actor;
-
-        if (stats.Length == 4)
-        {
-            max_hp = hp = stats[0];
-            dmg = stats[1];
-            spd = stats[2];
-            this.act = stats[3];
-        }
     }
 
     public void SetPosition(int x, int y)
@@ -47,6 +40,11 @@ public class Entity
     public void DestroySelf()
     {
         GameObject.Destroy(model);
+    }
+
+    public virtual Attack GetBasicAttack()
+    {
+        return null;
     }
 
     //ID
@@ -82,7 +80,7 @@ public class Entity
 
     public int GetDamage()
     {
-        return dmg;
+        return p_dmg;
     }
 
     public int GetSpeed()

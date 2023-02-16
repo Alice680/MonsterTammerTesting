@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180bf0193686a734ca16c11b742e9618, type: 3}
-  m_Name: Attacks
+  m_Script: {fileID: 11500000, guid: 870bbcf7bc719ae46a33d16d6271ff1e, type: 3}
+  m_Name: SpriteHolder
   m_EditorClassIdentifier: 
-  WeaponAttacks:
-  - {fileID: 11400000, guid: 7b032d3a1f6df494ba5b8c8e55673175, type: 2}
+  player_sprites:
+  - {fileID: 3872299411523515684, guid: 7baaa499e8b6060479c821b634d9f882, type: 3}

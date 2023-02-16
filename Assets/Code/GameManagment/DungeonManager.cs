@@ -7,12 +7,11 @@ public class DungeonManager : MonoBehaviour
 {
     //Temp
     [SerializeField] private Camera cam;
-    [SerializeField] private GameObject player;
-    [SerializeField] private GameObject enemy;
 
-    [SerializeField] private Attack short_sword;
+    public DungeonParameters layout;
 
     private Player player_controller;
+    private AICore map_controller;
 
     //Data storage
     private Grid current_map;
@@ -35,27 +34,18 @@ public class DungeonManager : MonoBehaviour
         ui = GetComponent<UI>();
         ui.SetUp(this);
 
-        current_map = new Grid(17, 17, cam);
+        current_map = new Grid(layout, cam);
         turn_keeper = new TurnKeeper();
         entities = new List<Entity>();
 
         player_controller = new Player(this, ui);
+        map_controller = new AICore(this);
 
         //temp
         cam.transform.position = new Vector3(8.5f, 8.5f, -10);
 
-        entities.Add(new Entity(player, player_controller, new int[4] { 3, 1, 2, 3 }));
-        entities.Add(new Entity(enemy, new AICore(this), new int[4] { 1, 1, 1, 2 }));
-        current_map.MoveEntity(8, 8, entities[0]);
-        current_map.MoveEntity(3, 12, entities[1]);
-
-        active_actor = player_controller;
+        AddEntity(new Vector2Int(8, 8), PlayerData.CreatePlayer(player_controller));
         //
-
-        foreach (Entity ent in entities)
-        {
-            turn_keeper.AddEntity(ent);
-        }
 
         StartTurn();
     }
@@ -71,6 +61,30 @@ public class DungeonManager : MonoBehaviour
         {
             StartTurn();
         }
+    }
+
+    ///Internal Methods
+
+    //Add Entity
+    private void AddEntity(Vector2Int position, Entity entity)
+    {
+        entities.Add(entity);
+
+        turn_keeper.AddEntity(entity);
+
+        current_map.MoveEntity(position, entity);
+    }
+
+    //Remove Entity
+    private void RemoveEntity(Entity entity)
+    {
+        current_map.RemoveEntity(entity);
+
+        turn_keeper.RemoveEntity(entity);
+
+        entities.Remove(entity);
+
+        entity.DestroySelf();
     }
 
     ///Core external calls. These methods advance the game state in various ways.
@@ -101,10 +115,10 @@ public class DungeonManager : MonoBehaviour
 
         Vector2Int vec = current_map.GetEntityPosition(current_entity) + position;
 
-        if (vec.x == -1 || vec.y == -1 || !current_map.CheckEntityEnter(vec.x, vec.y, current_entity))
+        if (vec.x == -1 || vec.y == -1 || !current_map.CheckEntityEnter(vec, current_entity))
             return false;
 
-        current_map.MoveEntity((int)vec.x, (int)vec.y, current_entity);
+        current_map.MoveEntity(vec, current_entity);
 
         --actions_left;
 
@@ -112,23 +126,31 @@ public class DungeonManager : MonoBehaviour
     }
 
     //
-    public bool TryToAttack(Vector2Int position)
+    public bool TryToAttack(Vector2Int position, int index)
     {
-        if (turn_ended || !IsValidPosition(position) || !IsValidAttackLocation(position))
+        if (turn_ended || !IsValidPosition(position) || !IsValidAttackLocation(position, index))
+            return false;
+
+
+        Attack temp_attack = null;
+
+        if (index == -1)
+            temp_attack = current_entity.GetBasicAttack();
+        else
             return false;
 
         --actions_left;
 
-        Vector2Int[] points = short_sword.GetTargetEffect(position, Direction.Up, current_map.GetGridSize());
+        Vector2Int[] points = temp_attack.GetTargetEffect(position, Direction.Up, current_map.GetGridSize());
 
         List<Entity> targets = new List<Entity>();
 
         foreach (Vector2Int point in points)
         {
-            GameObject attack_sprite = short_sword.GetBattleSprite();
+            GameObject attack_sprite = temp_attack.GetBattleSprite();
             attack_sprite.transform.position = new Vector2(0.5f, 0.5f) + position;
 
-            Entity temp = current_map.GetEntityAtPosition(point.x, point.y);
+            Entity temp = current_map.GetEntityAtPosition(point);
 
             if (temp != null)
                 targets.Add(temp);
@@ -136,7 +158,7 @@ public class DungeonManager : MonoBehaviour
 
         foreach (Entity target in targets)
         {
-            short_sword.TriggerAttack(current_entity, target);
+            temp_attack.TriggerAttack(current_entity, target);
 
             if (target.GetHP() <= 0)
                 RemoveEntity(target);
@@ -151,22 +173,6 @@ public class DungeonManager : MonoBehaviour
         turn_ended = true;
     }
 
-    ///Internal Methods
-    
-    //Add Entity
-
-    //Remove Entity
-    private void RemoveEntity(Entity entity)
-    {
-        current_map.RemoveEntity(entity);
-
-        turn_keeper.RemoveEntity(entity);
-
-        entities.Remove(entity);
-
-        entity.DestroySelf();
-    }
-
     ///Retrive data stored within the DungeonManager itself
 
     //Returns the number of actions the current player has left
@@ -177,12 +183,19 @@ public class DungeonManager : MonoBehaviour
 
     public bool IsValidPosition(Vector2Int position)
     {
-        return current_map.IsValidPosition(position.x, position.y);
+        return current_map.IsValidPosition(position);
     }
 
-    public bool IsValidAttackLocation(Vector2Int position)
+    public bool IsValidAttackLocation(Vector2Int position, int index)
     {
-        Vector2Int[] points = short_sword.GetTargetArea(current_entity.GetPosition(), Direction.Up, current_map.GetGridSize());
+        Attack temp_attack = null;
+
+        if (index == -1)
+            temp_attack = current_entity.GetBasicAttack();
+        else
+            return false;
+
+        Vector2Int[] points = temp_attack.GetTargetArea(current_entity.GetPosition(), Direction.Up, current_map.GetGridSize());
 
         foreach (Vector2Int point in points)
             if (point.Equals(position))
@@ -230,30 +243,46 @@ public class DungeonManager : MonoBehaviour
         current_map.ClearTileMarkers();
     }
 
-    public void ShowAttackArea(int x, int y)
+    //
+    public void ShowAttackArea(Vector2Int target, int index)
     {
-        Vector2Int[] points = short_sword.GetTargetArea(current_entity.GetPosition(), Direction.Up, current_map.GetGridSize());
+        Attack temp_attack = null;
+
+        if (index == -1)
+            temp_attack = current_entity.GetBasicAttack();
+        else
+            return;
+
+        Vector2Int[] points = temp_attack.GetTargetArea(current_entity.GetPosition(), Direction.Up, current_map.GetGridSize());
 
         current_map.ClearTileMarkers();
 
-        current_map.SetTileMarker(x, y, 0);
+        current_map.SetTileMarker(target, 0);
 
         foreach (Vector2Int point in points)
         {
-            if (point.x == x && point.y == y)
-                current_map.SetTileMarker(point.x, point.y, 2);
+            if (point.x == target.x && point.y == target.y)
+                current_map.SetTileMarker(point, 2);
             else
-                current_map.SetTileMarker(point.x, point.y, 1);
+                current_map.SetTileMarker(point, 1);
         }
     }
 
-    public void ShowAttackEffect(Vector2Int target)
+    //
+    public void ShowAttackEffect(Vector2Int target, int index)
     {
-        Vector2Int[] points = short_sword.GetTargetEffect(target, Direction.Up, current_map.GetGridSize());
+        Attack temp_attack = null;
+
+        if (index == -1)
+            temp_attack = current_entity.GetBasicAttack();
+        else
+            return;
+
+        Vector2Int[] points = temp_attack.GetTargetEffect(target, Direction.Up, current_map.GetGridSize());
 
         current_map.ClearTileMarkers();
 
         foreach (Vector2Int point in points)
-            current_map.SetTileMarker(point.x, point.y, 3);
+            current_map.SetTileMarker(target, 3);
     }
 }

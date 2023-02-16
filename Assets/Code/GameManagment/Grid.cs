@@ -55,10 +55,10 @@ public class Grid
 
     private Camera cam;
 
-    public Grid(int x, int y, Camera temp_cam)
+    public Grid(DungeonParameters parameters, Camera temp_cam)
     {
-        x_size = x;
-        y_size = y;
+        x_size = 17;
+        y_size = 17;
 
         cam = temp_cam;
 
@@ -73,7 +73,7 @@ public class Grid
         for (int i = 0; i < x_size; ++i)
             for (int e = 0; e < y_size; ++e)
             {
-                if (i == 0 || e == 0 || i == x - 1 || e == y - 1)
+                if (i == 0 || e == 0 || i == x_size - 1 || e == y_size - 1)
                     nodes[i, e] = new Node(i, e, TileType.Wall, tile_refrence.GetTile(TileType.Wall, 0));
                 else
                     nodes[i, e] = new Node(i, e, TileType.Ground, tile_refrence.GetTile(TileType.Ground, 0));
@@ -87,16 +87,16 @@ public class Grid
     }
 
     //Entity stuff
-    public void MoveEntity(int x, int y, Entity ent)
+    public void MoveEntity(Vector2Int position, Entity ent)
     {
-        if (!IsValidPosition(x, y) || ent == null)
+        if (!IsValidPosition(position) || ent == null)
             return;
 
         RemoveEntity(ent);
-        RemoveEntity(x, y);
+        RemoveEntity(position);
 
-        ent.SetPosition(x, y);
-        nodes[x, y].entity = ent;
+        ent.SetPosition(position.x, position.y);
+        nodes[position.x, position.y].entity = ent;
     }
 
     public void RemoveEntity(Entity ent)
@@ -113,12 +113,12 @@ public class Grid
                 }
     }
 
-    public void RemoveEntity(int x, int y)
+    public void RemoveEntity(Vector2Int position)
     {
-        if (!IsValidPosition(x, y))
+        if (!IsValidPosition(position))
             return;
 
-        nodes[x, y].entity = null;
+        nodes[position.x, position.y].entity = null;
     }
 
     public Vector2Int GetEntityPosition(Entity ent)
@@ -134,43 +134,43 @@ public class Grid
         return new Vector2Int(-1, -1);
     }
 
-    public Entity GetEntityAtPosition(int x, int y)
+    public Entity GetEntityAtPosition(Vector2Int position)
     {
-        if (!IsValidPosition(x, y))
+        if (!IsValidPosition(position))
             return null;
 
-        return nodes[x, y].entity;
+        return nodes[position.x, position.y].entity;
     }
 
-    public bool CheckEntityEnter(int x, int y, Entity ent)
+    public bool CheckEntityEnter(Vector2Int position, Entity ent)
     {
-        if (!IsValidPosition(x, y) || ent == null || GetEntityAtPosition(x, y) != null)
+        if (!IsValidPosition(position) || ent == null || GetEntityAtPosition(position) != null)
             return false;
 
-        return nodes[x, y].tile_type == TileType.Ground;
+        return nodes[position.x, position.y].tile_type == TileType.Ground;
     }
 
     //Tile Markers
-    public void SetTileMarker(int x, int y, int index)
+    public void SetTileMarker(Vector2Int position, int index)
     {
-        nodes[x, y].SetMarker(tile_refrence.GetTile(TileType.Marker, index));
+        nodes[position.x, position.y].SetMarker(tile_refrence.GetTile(TileType.Marker, index));
     }
 
-    public void ClearTileMarker(int x, int y)
+    public void ClearTileMarker(Vector2Int position)
     {
-        nodes[x, y].ClearMarker();
+        nodes[position.x, position.y].ClearMarker();
     }
 
     public void ClearTileMarkers()
     {
         for (int i = 0; i < x_size; ++i)
             for (int e = 0; e < y_size; ++e)
-                ClearTileMarker(i, e);
+                ClearTileMarker(new Vector2Int(i, e));
     }
 
     //TBD
-    public bool IsValidPosition(int x, int y)
+    public bool IsValidPosition(Vector2Int position)
     {
-        return x >= 0 && y >= 0 && x < x_size && y < y_size;
+        return position.x >= 0 && position.y >= 0 && position.x < x_size && position.y < y_size;
     }
 }

@@ -102,7 +102,7 @@ public class Player : Actor
         {
             target = dm_refrence.GetPositionFromID(dm_refrence.GetIDFromActive());
 
-            dm_refrence.ShowAttackArea(target.x, target.y);
+            dm_refrence.ShowAttackArea(target, -1);
 
             current_state = State.AttackArea;
         }
@@ -117,14 +117,14 @@ public class Player : Actor
             if (dm_refrence.IsValidPosition(target + inputs.move_direction))
             {
                 target += inputs.move_direction;
-                dm_refrence.ShowAttackArea(target.x, target.y);
+                dm_refrence.ShowAttackArea(target, -1);
             }
         }
         else if (inputs.enter_key)
         {
-            if (dm_refrence.IsValidAttackLocation(target))
+            if (dm_refrence.IsValidAttackLocation(target, -1))
             {
-                dm_refrence.ShowAttackEffect(target);
+                dm_refrence.ShowAttackEffect(target, -1);
 
                 current_state = State.AttackEffect;
             }
@@ -143,7 +143,7 @@ public class Player : Actor
     {
         if (inputs.enter_key)
         {
-            if (!dm_refrence.TryToAttack(target))
+            if (!dm_refrence.TryToAttack(target, -1))
                 return;
 
             target = new Vector2Int(-1, -1);
@@ -159,7 +159,7 @@ public class Player : Actor
         }
         else if (inputs.return_key)
         {
-            dm_refrence.ShowAttackArea(target.x, target.y);
+            dm_refrence.ShowAttackArea(target, -1);
 
             current_state = State.AttackArea;
         }

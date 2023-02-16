@@ -18,6 +18,6 @@ MonoBehaviour:
   - {fileID: 3425910753128473818, guid: 7e9fa8d0a14a5524f8daae4626af6915, type: 3}
   - {fileID: 8933441175286049254, guid: cc178a23702a0ba4bae93f376e912c70, type: 3}
   ground_tiles:
-  - {fileID: 7158810755294463463, guid: 347c5460ab982d740b5bd26c7abb16fe, type: 3}
+  - {fileID: 948736158918017136, guid: aa813993369a5e24ab0a4a4ee82cddeb, type: 3}
   wall_tiles:
-  - {fileID: 2114436363144596086, guid: cd084471c1428b047af6558230f6e806, type: 3}
+  - {fileID: 260064789482784397, guid: a1b31eb32d163f84fbdc02a456543505, type: 3}
